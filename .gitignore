@@ -1,0 +1,27 @@
+#
+# Standard Maven .gitignore
+#
+dnsClient/target/
+dnsClient/pom.xml.tag
+dnsClient/pom.xml.releaseBackup
+dnsClient/pom.xml.versionsBackup
+dnsClient/pom.xml.next
+dnsClient/release.properties
+dnsClient/dependency-reduced-pom.xml
+dnsClient/buildNumber.properties
+dnsClient/.mvn/timing.properties
+
+#
+# IntelliJ
+#
+dnsClient/*.iml
+dnsClient/.idea/*
+dnsClient/!.idea/runConfigurations/
+
+#
+# Visual Studio Code
+#
+dnsClient/.settings/
+dnsClient/.classpath
+dnsClient/.project
+.vscode/
