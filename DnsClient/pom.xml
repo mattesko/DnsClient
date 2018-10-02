@@ -30,7 +30,7 @@
                             <manifest>
                                 <addClasspath>true</addClasspath>
                                 <classpathPrefix>lib/</classpathPrefix>
-                                <mainClass>ca.mcgill.ecse.telecom.Initializer</mainClass>
+                                <mainClass>ca.mcgill.ecse.telecom.DnsClient</mainClass>
                             </manifest>
                         </archive>
                     </configuration>
@@ -41,7 +41,7 @@
                     <artifactId>exec-maven-plugin</artifactId>
                     <version>1.2.1</version>
                     <configuration>
-                        <mainClass>ca.mcgill.ecse.telecom.Initializer</mainClass>
+                        <mainClass>ca.mcgill.ecse.telecom.DnsClient</mainClass>
                     </configuration>
                 </plugin>
                 <plugin>

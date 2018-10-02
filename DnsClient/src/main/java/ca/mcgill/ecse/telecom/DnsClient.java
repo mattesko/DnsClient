@@ -1,8 +1,8 @@
 package ca.mcgill.ecse.telecom;
 
-public final class Initializer {
+public final class DnsClient {
 
-    private Initializer() {}
+    private DnsClient() {}
     
     /***
      * Starts the client

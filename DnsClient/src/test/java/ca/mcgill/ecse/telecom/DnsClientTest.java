@@ -5,12 +5,12 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Unit test for simple Initializer.
+ * Unit test for simple DnsClient.
  */
-public class InitializerTest {
+public class DnsClientTest {
     
     @Test
-    public void testInit() {
+    public void testDnsClient() {
         assertTrue(true);
     }
 }
