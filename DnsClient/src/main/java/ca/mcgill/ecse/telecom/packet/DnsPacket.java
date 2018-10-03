@@ -1,12 +1,12 @@
 package ca.mcgill.ecse.telecom.packet;
 
-public class DnsPacket {
+public class DnsPacket extends Packet {
 
     public DnsPacketHeader header;
     public DnsPacketQuestion question;
     public DnsPacketAnswer answer;
 
-    public class DnsPacketHeader {
+    public class DnsPacketHeader extends Packet.PacketHeader{
         public int hid__f;
         public boolean hqr__f;
         public byte hopcode__f = 0x00;
@@ -22,13 +22,13 @@ public class DnsPacket {
         public int harcount__f;
     }
 
-    public class DnsPacketQuestion {
+    public class DnsPacketQuestion extends Packet.PacketQuestion {
         public int qname__f; // FIXME variable length unknown!
         public int qtype__f;
         public int qclass__f = 0x0001;
     }
 
-    public class DnsPacketAnswer {
+    public class DnsPacketAnswer extends Packet.PacketAnswer{
         public int name__f; // FIXME variable length unknown!
         public int type__f;
         public int class__f;
@@ -39,4 +39,3 @@ public class DnsPacket {
         public int exchange__f; // FIXME variable length unknown!
     }
 }
-
