@@ -1,7 +1,4 @@
 /***
- * @name            DnsClient
- * @type            Class
- * @author          Matthew Lesko-krleza mlesko1996@gmail.com
  * @description     Entry point for the DnsClient command line program. 
  *                  Performs argument parsing, directs packet building, queries DNS server requests, and directs logging
  * ======================================================================================================================
@@ -19,6 +16,7 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
+import ca.mcgill.ecse.telecom.packet.DnsPacketBuilder;
 
 public final class DnsClient {
 
