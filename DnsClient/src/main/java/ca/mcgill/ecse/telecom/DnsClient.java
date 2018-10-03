@@ -43,10 +43,17 @@ public final class DnsClient {
     }
 
     /**
+<<<<<<< HEAD
      * @description Parses command line arguments
      * @param args The command line arguments
      * @return Arguments parsed and sorted by their respective option and argument type
      *         Keys are: timeout, maxEntries, port, queryType, dnsIp, domainName
+=======
+     * Parses arguments 
+     * @param args
+     * @param options
+     * @return
+>>>>>>> c2bfa96959f3276bc5da6c1574d22c65fea2f5d3
      * @throws Exception
      */
     public static HashMap<String, String> parseArguments(String[] args) throws Exception {
