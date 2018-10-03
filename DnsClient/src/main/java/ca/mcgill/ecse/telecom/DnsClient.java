@@ -26,6 +26,7 @@ public final class DnsClient {
     private static final String DEFAULT_MAX_ENTRIES = "3";
     private static final String DEFAULT_PORT = "53";
     private static final String DEFAULT_QUERY_TYPE = "A";
+    private static DnsPacketBuilder packetBuilder;
 
     private DnsClient() {}
     
