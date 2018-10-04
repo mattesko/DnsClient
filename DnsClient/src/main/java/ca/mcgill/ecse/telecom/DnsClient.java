@@ -9,6 +9,13 @@
 
 package ca.mcgill.ecse.telecom;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.util.HashMap;
 import java.util.regex.*;
 import org.apache.commons.cli.CommandLine;
@@ -35,6 +42,17 @@ public final class DnsClient {
     public static void main(String[] args) {
         try {
             HashMap<String, String> pArgs = parseArguments(args);
+            byte[] address = new byte[4];
+
+            int i = 0;
+            for (String token : pArgs.get("dnsIp").split(".")) {
+                address[i++] = Byte.valueOf(token);
+            }
+
+            Socket socket = new Socket(InetAddress.getByAddress(address), Integer.valueOf(pArgs.get("port")));
+            socket.setSoTimeout(Integer.valueOf(pArgs.get("timeout")));
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         }
         catch(Exception e) {
             System.out.println(e.getMessage());
@@ -97,7 +115,7 @@ public final class DnsClient {
         optVals.put("maxEntries", maxEntries);
         optVals.put("port", port);
         optVals.put("queryType", queryType);
-        optVals.put("dnsIp", dnsIp);
+        optVals.put("dnsIp", dnsIp.substring(1)); // Slice off the first character of the DnsIp string because of its @ character
         optVals.put("domainName", domainName);
 
         return optVals;
