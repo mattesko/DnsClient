@@ -12,8 +12,6 @@ package ca.mcgill.ecse.telecom;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashMap;
@@ -23,6 +21,7 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
+import ca.mcgill.ecse.telecom.packet.DnsPacket;
 import ca.mcgill.ecse.telecom.packet.DnsPacketBuilder;
 
 public final class DnsClient {
@@ -51,8 +50,17 @@ public final class DnsClient {
 
             Socket socket = new Socket(InetAddress.getByAddress(address), Integer.valueOf(pArgs.get("port")));
             socket.setSoTimeout(Integer.valueOf(pArgs.get("timeout")));
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
+            BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            // TODO these methods must be implemented
+            packetBuilder.createHeader();
+            packetBuilder.createQuestion();
+            DnsPacket packet = packetBuilder.getPacket();
+
+            // TODO send packet logic
+            sendPacket(packet, input);
+
         }
         catch(Exception e) {
             System.out.println(e.getMessage());
@@ -119,5 +127,9 @@ public final class DnsClient {
         optVals.put("domainName", domainName);
 
         return optVals;
+    }
+
+    public static void sendPacket(DnsPacket packet, BufferedReader inputStream) {
+        // TODO Implement me
     }
 }
