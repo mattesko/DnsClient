@@ -1,13 +1,9 @@
 package ca.mcgill.ecse.telecom;
 
-import org.apache.commons.cli.Options;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import static org.junit.Assert.*;
-
-import java.util.Arrays;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import java.util.HashMap;
+import org.junit.Test;
 
 /**
  * Unit test for simple DnsClient.
