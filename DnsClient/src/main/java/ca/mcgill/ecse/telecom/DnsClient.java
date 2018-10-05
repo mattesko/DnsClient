@@ -61,6 +61,11 @@ public final class DnsClient {
             // TODO send packet logic
             sendPacket(packet, input);
 
+            // TODO Read packet
+
+
+            // TODO Close socket
+            socket.close();
         }
         catch(Exception e) {
             System.out.println(e.getMessage());
