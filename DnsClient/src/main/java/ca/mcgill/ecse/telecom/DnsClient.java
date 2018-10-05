@@ -12,6 +12,8 @@ package ca.mcgill.ecse.telecom;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashMap;
@@ -41,28 +43,25 @@ public final class DnsClient {
     public static void main(String[] args) {
         try {
             HashMap<String, String> pArgs = parseArguments(args);
-            byte[] address = new byte[4];
-
-            int i = 0;
-            for (String token : pArgs.get("dnsIp").split(".")) {
-                address[i++] = Byte.valueOf(token);
-            }
-
-            Socket socket = new Socket(InetAddress.getByAddress(address), Integer.valueOf(pArgs.get("port")));
+            
+            DatagramSocket socket = new DatagramSocket();
             socket.setSoTimeout(Integer.valueOf(pArgs.get("timeout")));
-            PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
-            BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            socket.connect(InetAddress.getByName(pArgs.get("dnsIp")), Integer.valueOf(pArgs.get("port")));
 
             // TODO these methods must be implemented
             packetBuilder.createHeader();
             packetBuilder.createQuestion();
             DnsPacket packet = packetBuilder.getPacket();
 
-            // TODO send packet logic
-            sendPacket(packet, input);
+            // TODO Create DatagramPacket
+            // DatagramPacket packet = new DatagramPacket()
+            
+            // TODO send DatagramPacket
+            // socket.send(packet);
 
             // TODO Read packet
 
+            // TODO Print results
 
             // TODO Close socket
             socket.close();
@@ -132,9 +131,5 @@ public final class DnsClient {
         optVals.put("domainName", domainName);
 
         return optVals;
-    }
-
-    public static void sendPacket(DnsPacket packet, BufferedReader inputStream) {
-        // TODO Implement me
     }
 }
