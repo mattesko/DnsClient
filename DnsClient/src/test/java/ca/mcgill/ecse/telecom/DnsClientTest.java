@@ -20,7 +20,7 @@ public class DnsClientTest {
             assertEquals("2", pArgs.get("maxEntries"));
             assertEquals("53", pArgs.get("port"));
             assertEquals("mx", pArgs.get("queryType"));
-            assertEquals("@8.8.8.8", pArgs.get("dnsIp"));
+            assertEquals("8.8.8.8", pArgs.get("dnsIp"));
             assertEquals("mcgill.ca", pArgs.get("domainName"));
         }
         catch(Exception e) {
@@ -38,7 +38,7 @@ public class DnsClientTest {
             assertEquals("2", pArgs.get("maxEntries"));
             assertEquals("53", pArgs.get("port"));
             assertEquals("mx", pArgs.get("queryType"));
-            assertEquals("@8.8.8.8", pArgs.get("dnsIp"));
+            assertEquals("8.8.8.8", pArgs.get("dnsIp"));
             assertEquals("mcgill.ca", pArgs.get("domainName"));
         }
         catch(Exception e) {
