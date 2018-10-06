@@ -72,7 +72,7 @@ public final class DnsClient {
     }
 
     /**
-     * @description Parses command line arguments
+     * @description Parses command line arguments by options, DNS IP and domain name
      * @param args The command line arguments
      * @return Arguments parsed and sorted by their respective option and argument type
      *         Keys are: timeout, maxEntries, port, queryType, dnsIp, domainName
@@ -83,16 +83,20 @@ public final class DnsClient {
         String timeout, maxEntries, port, queryType, dnsIp = "", domainName = "";
 
         Options options = new Options();
-        options.addOption("t", true, "timeout");
-        options.addOption("r", true, "max-entries");
-        options.addOption("p", true, "port");
+        options.addOption("t",  true,   "timeout");
+        options.addOption("r",  true,   "max-entries");
+        options.addOption("p",  true,   "port");
         options.addOption("mx", false , "mail-server");
         options.addOption("ns", false , "name-server");
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
 
-        Pattern ipPatt = Pattern.compile("@(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\b");
+        Pattern ipPatt = Pattern.compile(
+            "@(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])"  +
+            "\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])"+
+            "\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])"+
+            "\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\b");
         Pattern domPatt = Pattern.compile("(?!:\\/\\/)([a-zA-Z0-9-_]+\\.)*[a-zA-Z0-9][a-zA-Z0-9-_]+\\.[a-zA-Z]{2,11}?");
 
         Matcher matchIp = ipPatt.matcher(String.join(" ", cmd.getArgList()));
@@ -117,18 +121,12 @@ public final class DnsClient {
             queryType = DEFAULT_QUERY_TYPE;
         }
 
-        dnsIp = matchIp.group();
-        domainName = matchDom.group();
-        timeout = cmd.getOptionValue("t", DEFAULT_TIMEOUT);
-        maxEntries = cmd.getOptionValue("r", DEFAULT_MAX_ENTRIES);
-        port = cmd.getOptionValue("p", DEFAULT_PORT);
-
-        optVals.put("timeout", timeout);
-        optVals.put("maxEntries", maxEntries);
-        optVals.put("port", port);
-        optVals.put("queryType", queryType);
-        optVals.put("dnsIp", dnsIp.substring(1)); // Slice off the first character of the DnsIp string because of its @ character
-        optVals.put("domainName", domainName);
+        optVals.put("timeout",      cmd.getOptionValue("t", DEFAULT_TIMEOUT));
+        optVals.put("maxEntries",   cmd.getOptionValue("r", DEFAULT_MAX_ENTRIES));
+        optVals.put("port",         cmd.getOptionValue("p", DEFAULT_PORT));
+        optVals.put("queryType",    queryType);
+        optVals.put("dnsIp",        matchIp.group().substring(1)); // Slice off the first character of the DnsIp string because of its @ character
+        optVals.put("domainName",   matchDom.group());
 
         return optVals;
     }
