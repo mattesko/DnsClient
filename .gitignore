@@ -25,3 +25,18 @@ DnsClient/.settings/
 DnsClient/.classpath
 DnsClient/.project
 .vscode/
+
+
+#
+# Report tex
+#
+reports/experiment_2/*.aux
+reports/experiment_2/.aux
+reports/experiment_2/*.fdb_latexmk
+reports/experiment_2/*.toc
+reports/experiment_2/*.fls
+reports/experiment_2/*.lof
+reports/experiment_2/*.log
+reports/experiment_2/*.lot
+reports/experiment_2/*.out
+reports/experiment_2/report.synctex.gz

@@ -1,0 +1,50 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning, arrows, backgrounds, fit, shapes.geometric, decorations.pathreplacing}
+\usepackage{color}
+\usepackage{hyperref}
+\usetikzlibrary{shapes,arrows, automata}
+\usepackage[margin=2cm]{geometry}
+
+\title{ECSE 489 - Telecommunication Network Lab\\Experiment 2 Report - Section 2}
+\author{Matthew Lesko\\260692352 \and Maxence-Henri Rousseau-Regaudie\\ }
+\date{\today}
+
+%\definecolor{dblue}{rgb}{0.5,0.5,0.8}%
+%\definecolor{dgreen}{rgb}{0.5,0.8,0.5}
+\colorlet{dblue}{blue!40!black}
+\colorlet{dgreen}{green!40!black}
+
+\hypersetup {
+	colorlinks = true,
+	linkcolor = dblue,
+	citecolor = dgreen,
+	urlcolor = blue  
+}
+
+\begin{document}
+\pagenumbering{gobble}
+\maketitle
+\newpage
+\pagenumbering{roman}
+\tableofcontents
+\listoffigures
+\listoftables
+\newpage
+\pagenumbering{arabic} 
+\include{introduction}
+\include{dns_client_program_design}
+\include{testing}
+\include{experiment}
+\include{discussion}
+\newpage
+\bibliographystyle{ieeetr}
+\bibliography{sources}
+\addcontentsline{toc}{section}{References}
+
+\include{appendix}
+
+\end{document}
