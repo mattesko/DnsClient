@@ -43,6 +43,7 @@ public final class DnsClient {
      */
     public static void main(String[] args) {
         try {
+            long timeInterval = 0;
             HashMap<String, String> pArgs = parseArguments(args);
             logger = new DnsClientLogger(pArgs);
             logger.printRequest();
@@ -60,12 +61,14 @@ public final class DnsClient {
             // DatagramPacket packet = new DatagramPacket()
             
             // TODO send DatagramPacket
+            long start = System.currentTimeMillis();
             // socket.send(packet);
 
             // TODO Read packet
+            timeInterval = System.currentTimeMillis() - start;
 
             // TODO Print results
-
+            
             // TODO Close socket
             socket.close();
         }
