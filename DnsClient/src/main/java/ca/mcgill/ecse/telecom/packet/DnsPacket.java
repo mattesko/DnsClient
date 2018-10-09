@@ -7,19 +7,19 @@ public class DnsPacket extends Packet {
     public DnsPacketAnswer answer;
 
     public class DnsPacketHeader extends Packet.PacketHeader{
-        public int hid__f;
-        public boolean hqr__f;
-        public byte hopcode__f = 0x00;
-        public boolean haa__f;
-        public boolean htc__f;
-        public boolean hrd__f;
-        public boolean hra__f;
-        public byte hz__f = 0x00;
-        public byte hrcode__f;
-        public int hqdcount__f = 0x0001;
-        public int hancount__f;
-        public int hnscount__f; //ignore
-        public int harcount__f;
+        public int id__f;
+        public boolean qr__f;
+        public byte opcode__f = 0x00;
+        public boolean aa__f;
+        public boolean tc__f;
+        public boolean rd__f;
+        public boolean ra__f;
+        public byte z__f = 0x00;
+        public byte rcode__f;
+        public int qdcount__f = 0x0001;
+        public int ancount__f;
+        public int nscount__f; //ignore
+        public int arcount__f;
     }
 
     public class DnsPacketQuestion extends Packet.PacketQuestion {
