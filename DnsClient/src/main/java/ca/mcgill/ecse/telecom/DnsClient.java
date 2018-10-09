@@ -33,6 +33,7 @@ public final class DnsClient {
     private static final String DEFAULT_PORT = "53";
     private static final String DEFAULT_QUERY_TYPE = "A";
     private static DnsPacketBuilder packetBuilder;
+    private static DnsClientLogger logger;
 
     private DnsClient() {}
     
@@ -43,6 +44,8 @@ public final class DnsClient {
     public static void main(String[] args) {
         try {
             HashMap<String, String> pArgs = parseArguments(args);
+            logger = new DnsClientLogger(pArgs);
+            logger.printRequest();
             
             DatagramSocket socket = new DatagramSocket();
             socket.setSoTimeout(Integer.valueOf(pArgs.get("timeout")));
