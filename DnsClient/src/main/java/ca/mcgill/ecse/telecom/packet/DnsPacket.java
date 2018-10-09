@@ -2,15 +2,15 @@ package ca.mcgill.ecse.telecom.packet;
 
 public class DnsPacket extends Packet {
 
-    public DnsPacketHeader header;
-    public DnsPacketQuestion question;
-    public DnsPacketAnswer answer;
+    private DnsPacketHeader header;
+    private DnsPacketQuestion question;
+    private DnsPacketAnswer answer;
 
     public DnsPacketHeader getPacketHeader() {return this.header;}
 
     public DnsPacketQuestion getPacketQuestion() {return this.question;}
 
-    public DnsPacketAnswer getPacketAsnwer() {return this.answer;}
+    public DnsPacketAnswer getPacketAnswer() {return this.answer;}
 
     public class DnsPacketHeader extends Packet.PacketHeader{
         public int id__f;
@@ -22,10 +22,10 @@ public class DnsPacket extends Packet {
         public boolean ra__f;
         public byte z__f = 0x00;
         public byte rcode__f;
-        public int qdcount__f = 0x0001;
-        public int ancount__f;
-        public int nscount__f; //ignore
-        public int arcount__f;
+        public int qdcount__f = 1;
+        public int ancount__f = 0;
+        public int nscount__f = 0; //ignore
+        public int arcount__f; // TBD
 
         public int getId() {return id__f;}
 
@@ -36,7 +36,7 @@ public class DnsPacket extends Packet {
         public boolean getAa() {return aa__f;}
 
         public boolean getTc() {return tc__f;}
-
+        
         public boolean getRd() {return rd__f;}
 
         public boolean getRa() {return ra__f;}
@@ -50,7 +50,6 @@ public class DnsPacket extends Packet {
         public int getAncount() {return ancount__f;}
 
         public int getArcount() {return arcount__f;}
-
     }
 
     public class DnsPacketQuestion extends Packet.PacketQuestion {
@@ -67,14 +66,14 @@ public class DnsPacket extends Packet {
     }
 
     public class DnsPacketAnswer extends Packet.PacketAnswer{
-        private int name__f; // FIXME variable length unknown!
-        private int type__f;
-        private int class__f;
-        private long ttl__f;
-        private int rdlength__f; 
-        private long rdata__f;
-        private int preference__f;
-        private int exchange__f; // FIXME variable length unknown!
+        public int name__f; // FIXME variable length unknown!
+        public int type__f;
+        public int class__f;
+        public long ttl__f;
+        public int rdlength__f; 
+        public long rdata__f;
+        public int preference__f;
+        public int exchange__f; // FIXME variable length unknown!
 
         public int getName() {return name__f;}
 
