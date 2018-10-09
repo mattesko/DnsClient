@@ -123,7 +123,7 @@ public final class DnsClient {
         }
 
         optVals.put("timeout",      cmd.getOptionValue("t", DEFAULT_TIMEOUT));
-        optVals.put("maxEntries",   cmd.getOptionValue("r", DEFAULT_MAX_RETRIES));
+        optVals.put("maxRetries",   cmd.getOptionValue("r", DEFAULT_MAX_RETRIES));
         optVals.put("port",         cmd.getOptionValue("p", DEFAULT_PORT));
         optVals.put("queryType",    queryType);
         optVals.put("dnsIp",        matchIp.group().substring(1)); // Slice off the first character of the DnsIp string because of its @ character
