@@ -12,7 +12,7 @@ public class DnsPacket extends Packet {
 
     public DnsPacketAnswer getPacketAsnwer() {return this.answer;}
 
-    private class DnsPacketHeader extends Packet.PacketHeader{
+    public class DnsPacketHeader extends Packet.PacketHeader{
         public int id__f;
         public boolean qr__f;
         public byte opcode__f = 0x00;
@@ -53,7 +53,7 @@ public class DnsPacket extends Packet {
 
     }
 
-    private class DnsPacketQuestion extends Packet.PacketQuestion {
+    public class DnsPacketQuestion extends Packet.PacketQuestion {
         public int qname__f; // FIXME variable length unknown!
         public int qtype__f;
         public int qclass__f = 0x0001;
@@ -66,7 +66,7 @@ public class DnsPacket extends Packet {
 
     }
 
-    private class DnsPacketAnswer extends Packet.PacketAnswer{
+    public class DnsPacketAnswer extends Packet.PacketAnswer{
         private int name__f; // FIXME variable length unknown!
         private int type__f;
         private int class__f;
