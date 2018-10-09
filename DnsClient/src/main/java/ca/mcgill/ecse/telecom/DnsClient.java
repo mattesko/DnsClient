@@ -29,7 +29,7 @@ import ca.mcgill.ecse.telecom.packet.DnsPacketBuilder;
 public final class DnsClient {
 
     private static final String DEFAULT_TIMEOUT = "5";
-    private static final String DEFAULT_MAX_ENTRIES = "3";
+    private static final String DEFAULT_MAX_RETRIES = "3";
     private static final String DEFAULT_PORT = "53";
     private static final String DEFAULT_QUERY_TYPE = "A";
     private static DnsPacketBuilder packetBuilder;
@@ -75,16 +75,17 @@ public final class DnsClient {
      * @description Parses command line arguments by options, DNS IP and domain name
      * @param args The command line arguments
      * @return Arguments parsed and sorted by their respective option and argument type
-     *         Keys are: timeout, maxEntries, port, queryType, dnsIp, domainName
+     *         Keys are: timeout, maxRetries, port, queryType, dnsIp, domainName
      * @throws Exception
      */
     public static HashMap<String, String> parseArguments(String[] args) throws Exception {
         HashMap<String, String> optVals = new HashMap<>();
-        String timeout, maxEntries, port, queryType, dnsIp = "", domainName = "";
+        // QueryType has to be determined differently from the other options because of it can have multiple different flags for the same option
+        String queryType;
 
         Options options = new Options();
         options.addOption("t",  true,   "timeout");
-        options.addOption("r",  true,   "max-entries");
+        options.addOption("r",  true,   "max-retries");
         options.addOption("p",  true,   "port");
         options.addOption("mx", false , "mail-server");
         options.addOption("ns", false , "name-server");
@@ -122,7 +123,7 @@ public final class DnsClient {
         }
 
         optVals.put("timeout",      cmd.getOptionValue("t", DEFAULT_TIMEOUT));
-        optVals.put("maxEntries",   cmd.getOptionValue("r", DEFAULT_MAX_ENTRIES));
+        optVals.put("maxEntries",   cmd.getOptionValue("r", DEFAULT_MAX_RETRIES));
         optVals.put("port",         cmd.getOptionValue("p", DEFAULT_PORT));
         optVals.put("queryType",    queryType);
         optVals.put("dnsIp",        matchIp.group().substring(1)); // Slice off the first character of the DnsIp string because of its @ character
