@@ -9,20 +9,19 @@
 
 package ca.mcgill.ecse.telecom;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.util.HashMap;
-import java.util.regex.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
+
 import ca.mcgill.ecse.telecom.packet.DnsPacket;
 import ca.mcgill.ecse.telecom.packet.DnsPacketBuilder;
 
@@ -51,25 +50,18 @@ public final class DnsClient {
             DatagramSocket socket = new DatagramSocket();
             socket.setSoTimeout(Integer.valueOf(pArgs.get("timeout")));
             socket.connect(InetAddress.getByName(pArgs.get("dnsIp")), Integer.valueOf(pArgs.get("port")));
-
-            // TODO these methods must be implemented
-            packetBuilder.createHeader();
-            packetBuilder.createQuestion();
-            DnsPacket packet = packetBuilder.getPacket();
-
-            // TODO Create DatagramPacket
-            // DatagramPacket packet = new DatagramPacket()
             
-            // TODO send DatagramPacket
-            long start = System.currentTimeMillis();
-            // socket.send(packet);
+            packetBuilder = new DnsPacketBuilder(new DnsPacket());
+            DatagramPacket dgPacket = packetBuilder.createRequestPacket(pArgs);
+            socket.send(dgPacket);
 
-            // TODO Read packet
-            timeInterval = System.currentTimeMillis() - start;
+            DatagramPacket dgReceived = new DatagramPacket(new byte[128], 128);
+            socket.receive(dgReceived);
 
-            // TODO Print results
-            
-            // TODO Close socket
+            // TODO Update header, question, and answer
+
+            // TODO Print results with logger
+
             socket.close();
         }
         catch(Exception e) {
