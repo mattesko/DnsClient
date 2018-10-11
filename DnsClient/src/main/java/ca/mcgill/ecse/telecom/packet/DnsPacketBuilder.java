@@ -8,7 +8,7 @@ import ca.mcgill.ecse.telecom.packet.DnsPacket.DnsPacketAnswer;
 import ca.mcgill.ecse.telecom.packet.DnsPacket.DnsPacketHeader;
 import ca.mcgill.ecse.telecom.packet.DnsPacket.DnsPacketQuestion;
 
-public class DnsPacketBuilder implements PacketBuilder{
+public class DnsPacketBuilder {
     DnsPacket packet;
     private final int BUFFER_LENGTH = 64;
     private final short ANSWER_TYPE_A = 0x0001;
@@ -20,11 +20,26 @@ public class DnsPacketBuilder implements PacketBuilder{
         this.packet = packet;
     }
 
-    public DnsPacketHeader createHeader() {return null;}
+    public DnsPacket updateHeader() {
+        return null;
+    }
 
-    public DnsPacketQuestion createQuestion() {return null;}
+    public DnsPacket updateQuestion() {
+        return null;
+    }
 
-    public DnsPacketAnswer createAnswer() {return null;}
+    public DnsPacket updateAnswer() {
+        return null;
+    }
+
+    public DnsPacket updatePacket(DatagramPacket dgPacket) {
+        byte[] data = dgPacket.getData();
+        ByteBuffer buffer = ByteBuffer.wrap(data);
+
+        // TODO update dns packet with data from response
+
+        return this.packet;
+    }
 
     public DnsPacket getPacket() {return packet;}
 
