@@ -52,11 +52,11 @@ public final class DnsClient {
             socket.connect(InetAddress.getByName(pArgs.get("dnsIp")), Integer.valueOf(pArgs.get("port")));
             
             packetBuilder = new DnsPacketBuilder(new DnsPacket());
-            DatagramPacket dgPacket = packetBuilder.createRequestPacket(pArgs);
-            socket.send(dgPacket);
+            DatagramPacket dgRequest = packetBuilder.createRequestPacket(pArgs);
+            socket.send(dgRequest);
 
-            DatagramPacket dgReceived = new DatagramPacket(new byte[128], 128);
-            socket.receive(dgReceived);
+            DatagramPacket dgResponse = new DatagramPacket(new byte[128], 128);
+            socket.receive(dgResponse);
 
             // TODO Update header, question, and answer
 
