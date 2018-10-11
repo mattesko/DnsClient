@@ -2,7 +2,9 @@ package ca.mcgill.ecse.telecom;
 
 import java.net.DatagramPacket;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+
 import ca.mcgill.ecse.telecom.packet.DnsPacket;
 
 public class DnsClientLogger {
@@ -111,24 +113,4 @@ public class DnsClientLogger {
 
         MX <tab> [alias] <tab> [pref] <tab> [seconds can cache] <tab> [auth | nonauth]
     */
-
-    private void printAnswerIP(DnsPacket.DnsPacketHeader header, DnsPacket.DnsPacketAnswer answer) {
-        // TODO implement me
-    }
-
-    private void printAnswerNS() {
-        // TODO implement me
-    }
-
-    private void printAnswerCNAME() {
-        // TODO implement me
-    }
-
-    private void printAnswerMX() {
-        // TODO implement me
-    }
-
-    private void printAdditionalSection(DnsPacket.DnsPacketHeader header, DnsPacket.DnsPacketQuestion question, DnsPacket.DnsPacketAnswer answer) {
-        // TODO implement me
-    }
 }
