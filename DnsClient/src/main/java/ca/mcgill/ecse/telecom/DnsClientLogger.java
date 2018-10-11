@@ -58,9 +58,9 @@ public class DnsClientLogger {
     }
 
     public void printRequest() {
-        System.out.printf("DnsClient sending request for %s", this.requestArgs.get("domainName"));
-        System.out.printf("Server: %s", this.requestArgs.get("dnsIp"));
-        System.out.printf("Request type: %s", this.requestArgs.get("queryType").toUpperCase());
+        System.out.printf("DnsClient sending request for %s\n", this.requestArgs.get("domainName"));
+        System.out.printf("Server: %s\n", this.requestArgs.get("dnsIp"));
+        System.out.printf("Request type: %s\n", this.requestArgs.get("queryType").toUpperCase());
     }
 
     public void printResponse(DnsPacket dnsPacket, long elapsedTime) {
