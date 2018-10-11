@@ -88,12 +88,19 @@ public class DnsClientLogger {
         //Get next Short (2 Bytes)
         short ARCOUNT = Header.getShort();
 
+<<<<<<< HEAD
         short AN_AR_Count[] = new short[3];
 
         AN_AR_Count[0] = ANCOUNT;
         AN_AR_Count[1] = ARCOUNT;
         AN_AR_Count[2] = AA;
 
+=======
+        short AN_AR_Count[] = new short[2];
+
+        AN_AR_Count[0] = ANCOUNT;
+        AN_AR_Count[1] = ARCOUNT;
+>>>>>>> a5dadabadcb67af3a9c3f0ea869e6d378f06a9da
 
         return AN_AR_Count;
     }
@@ -101,14 +108,24 @@ public class DnsClientLogger {
 
     private static void parseResponseAnswer(ByteBuffer Answer, short[] AN_AR_Count) throws Exception{
        
+<<<<<<< HEAD
         //Answer Section -----------------------------------------------------
+=======
+        //Answer Section
+>>>>>>> a5dadabadcb67af3a9c3f0ea869e6d378f06a9da
         int ANCOUNT = AN_AR_Count[0];
 
         //Repeat for all Resource Reccords
         for(int i = 0; i < ANCOUNT; i++){
+<<<<<<< HEAD
             short Asw_Name = Answer.getShort();  //2 bytes ???
             short Asw_Type = Answer.getShort();
 
+=======
+            short Asw_Name = Answer.getShort();
+            short Asw_Type = Answer.getShort();
+            
+>>>>>>> a5dadabadcb67af3a9c3f0ea869e6d378f06a9da
             //Check if Similar to QCODE
             short Asw_Class = Answer.getShort();
             if(Asw_Class != 0x0001){
@@ -126,7 +143,11 @@ public class DnsClientLogger {
             //RDATA Type Selection
             if(Asw_Type == 0x0001){
                 //Print IP Address
+<<<<<<< HEAD
                 System.out.println("Answer RR #" + i + " - The IP Address is " + buffer.get() + "." + buffer.get() + "." + buffer.get() + "." + buffer.get()); 
+=======
+                System.out.println("The IP Address is " + buffer.get() + "." + buffer.get() + "." + buffer.get() + "." + buffer.get()); 
+>>>>>>> a5dadabadcb67af3a9c3f0ea869e6d378f06a9da
             }
             if(Asw_Type == 0x0002){
                 //TODO - Print Reverse QNAME
@@ -137,11 +158,15 @@ public class DnsClientLogger {
             if(Asw_Type == 0x000f){
                 //Get Preference
                 int pref = buffer.getShort();
+<<<<<<< HEAD
                 System.out.println("Answer RR #" + i + " - Preference (" + pref + ")");
+=======
+>>>>>>> a5dadabadcb67af3a9c3f0ea869e6d378f06a9da
                 //TODO - Print Name
             }
         }
 
+<<<<<<< HEAD
     //Authority Section -----------------------------------------------------
         //How to skip it
 
@@ -153,6 +178,14 @@ public class DnsClientLogger {
         //TODO
     }
 
+=======
+    //Authority Section
+
+
+    //Additional Section
+
+
+>>>>>>> a5dadabadcb67af3a9c3f0ea869e6d378f06a9da
     }
 
 
