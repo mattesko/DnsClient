@@ -121,54 +121,37 @@ public class DnsClientLogger {
         if((buffer & 1<<1) == 2){ //If second bit is 1 throw error
             throw new Exception("ERROR - Response was Truncated.\n");
         }
-        //RD is Irrelevant
 
-        //Get next Byte - 1 bytes (RA, Z, RCODE)
         buffer = Header.get();
-
         //Check if the server support recursive (1 if they do not support??)
         if((buffer & 1<<7) == 1 ){
             throw new Exception("ERROR - Server does not support recursive queries.\n");
         }
-        //Z is Irrelevant
 
         //Check RCODE Response
         int RCODE = buffer & 0xf;
             //Code 0 - Do nothing
 
-            //Code 1
             if((RCODE == 1) ){
                 throw new Exception("ERROR - Format error: the name server was unable to interpret the query");
             }
-            //Code 2
             else if((RCODE == 2) ){
                 throw new Exception("ERROR - Server failure: the name server was unable to process this query due to a problem with the name server");
             }
-            //Code 3
             else if((RCODE == 3) ){
                 throw new Exception("NOTFOUND - Name error: meaningful only for responses from an authoritative name server, this code signifies that the domain name referenced in the query does not exist");
             }
-            //Code 4
             else if((RCODE == 4) ){
                 throw new Exception("ERROR - Not implemented: the name server does not support the requested kind of query");
             }
-            //Code 5
             else if((RCODE == 5) ){
                 throw new Exception("ERROR - Refused: the name server refuses to perform the requested operation for policy reasons");
             }
 
-        //Get next Short (2 Bytes)
-        short QDCOUNT = Header.getShort(); //Irrelevant
-
-        //Get next Short (2 Bytes)
+        short QDCOUNT = Header.getShort();
         short ANCOUNT = Header.getShort();
-
-        //Get next Short (2 Bytes)
-        short NSCOUNT = Header.getShort(); //Irrelevant
-
-        //Get next Short (2 Bytes)
+        short NSCOUNT = Header.getShort();
         short ARCOUNT = Header.getShort();
-
         short AN_AR_Count[] = new short[4];
 
         AN_AR_Count[0] = ANCOUNT;
@@ -178,61 +161,6 @@ public class DnsClientLogger {
 
         return AN_AR_Count;
     }
-
-
-    // private static void parseResponseAnswer(ByteBuffer Answer, short[] AN_AR_Count) throws Exception{
-       
-    //     //Answer Section -----------------------------------------------------
-    //     int ANCOUNT = AN_AR_Count[0];
-
-    //     //Repeat for all Resource Reccords
-    //     for(int i = 0; i < ANCOUNT; i++){
-    //         short Asw_Name = Answer.getShort();  //2 bytes ???
-    //         short Asw_Type = Answer.getShort();
-
-    //         //Check if Similar to QCODE
-    //         short Asw_Class = Answer.getShort();
-    //         if(Asw_Class != 0x0001){
-    //             throw new Exception("ERROR - CLASS field not matching QCODE");
-    //         }
-
-    //         int Asw_TTL = Answer.getInt(); //Unsigned
-    //         int Asw_RDLength = Answer.getShort();
-
-    //         //Create a ByteBuffer with the RDATA in Answer
-    //         byte[] RDATA = new byte[Asw_RDLength];
-    //         ByteBuffer buffer = ByteBuffer.wrap(RDATA);
-    //         buffer = Answer.get(RDATA);
-
-    //         //RDATA Type Selection
-    //         if(Asw_Type == 0x0001){
-    //             //Print IP Address
-    //             System.out.println("Answer RR #" + i + " - The IP Address is " + buffer.get() + "." + buffer.get() + "." + buffer.get() + "." + buffer.get()); 
-    //         }
-    //         if(Asw_Type == 0x0002){
-    //             //TODO - Print Reverse QNAME
-    //         }
-    //         if(Asw_Type == 0x0005){
-    //             //TODO - Print Name
-    //         }
-    //         if(Asw_Type == 0x000f){
-    //             //Get Preference
-    //             int pref = buffer.getShort();
-    //             System.out.println("Answer RR #" + i + " - Preference (" + pref + ")");
-    //             //TODO - Print Name
-    //         }
-    //     }
-
-    // //Authority Section -----------------------------------------------------
-    //     //How to skip it
-
-    // //Additional Section ----------------------------------------------------
-    // int ARCOUNT = AN_AR_Count[0];
-
-    // //Repeat for all Resource Reccords
-    // for(int i = 0; i < ARCOUNT; i++){
-    //     //TODO
-    // }
 
     public void printRequest() {
         System.out.printf("DnsClient sending request for %s\n", this.requestArgs.get("domainName"));
