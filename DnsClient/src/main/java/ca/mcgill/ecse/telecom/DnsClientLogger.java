@@ -97,7 +97,7 @@ public class DnsClientLogger {
 
     }
 
-    private static short[] parseResponseHeader(ByteBuffer Header, int ID) throws Exception{
+    private short[] parseResponseHeader(ByteBuffer Header, int ID) throws Exception{
         //Check For Matching ID - 2 bytes
         int r_id = (int) Header.getShort();
         if(r_id != ID){
