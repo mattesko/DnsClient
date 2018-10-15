@@ -167,4 +167,40 @@ public class DnsClientLogger {
         System.out.printf("Server: %s\n", this.requestArgs.get("dnsIp"));
         System.out.printf("Request type: %s\n", this.requestArgs.get("queryType").toUpperCase());
     }
+
+    private String parseNameServer(ByteBuffer buffer) {
+
+        byte len = buffer.get();
+        StringBuilder sb = new StringBuilder();
+        byte end = 0x00;
+        
+        while(len != end) {
+            byte[] data = new byte[len];
+            buffer.get(data, 0, len);
+            sb.append(new String(data, StandardCharsets.UTF_8));
+            len = buffer.get();
+            if (len != 0x00) {sb.append(".");}
+        }
+
+        return sb.toString();
+    }
+
+    private String parseMailbox(ByteBuffer buffer, short namePointer) {
+
+        byte len = buffer.get();
+        String domainName = requestArgs.get("domainName");
+        if (domainName.contains("www")) domainName = domainName.substring(3);
+        StringBuilder sb = new StringBuilder();
+        byte end = (byte) (namePointer >> 8); // The 8 MSB of the pointer indicate that it is a pointer
+
+        while(len != end) {
+            byte[] data = new byte[len];
+            buffer.get(data, 0, len);
+            sb.append(new String(data, StandardCharsets.UTF_8));
+            len = buffer.get();
+            if (len != end) {sb.append(".");}
+        }
+        sb.append(domainName);
+        return sb.toString();
+    }
 }
