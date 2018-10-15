@@ -17,7 +17,7 @@ public class DnsClientTest {
             HashMap<String, String> pArgs = DnsClient.parseArguments(args);
         
             assertEquals("10", pArgs.get("timeout"));
-            assertEquals("2", pArgs.get("maxEntries"));
+            assertEquals("2", pArgs.get("maxRetries"));
             assertEquals("53", pArgs.get("port"));
             assertEquals("mx", pArgs.get("queryType"));
             assertEquals("8.8.8.8", pArgs.get("dnsIp"));
@@ -35,7 +35,7 @@ public class DnsClientTest {
             HashMap<String, String> pArgs = DnsClient.parseArguments(args);
         
             assertEquals("10", pArgs.get("timeout"));
-            assertEquals("2", pArgs.get("maxEntries"));
+            assertEquals("2", pArgs.get("maxRetries"));
             assertEquals("53", pArgs.get("port"));
             assertEquals("mx", pArgs.get("queryType"));
             assertEquals("8.8.8.8", pArgs.get("dnsIp"));
