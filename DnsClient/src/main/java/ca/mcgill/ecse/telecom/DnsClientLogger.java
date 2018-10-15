@@ -14,6 +14,7 @@ public class DnsClientLogger {
     private final int ANSWER_TYPE_NS = 0x0002;
     private final int ANSWER_TYPE_MX = 0x000f;
     private final int ANSWER_TYPE_CNAME = 0x0005;
+    private final int ANSWER_TYPE_SOA = 0x0006;
 
     public DnsClientLogger(HashMap<String, String> requestArgs) {
         this.requestArgs = requestArgs;
@@ -35,17 +36,17 @@ public class DnsClientLogger {
         buffer.get(dataAnswer, 0, dataAnswer.length);
 
         System.out.printf("***Answer Section (%d records)***\n", headerFields[0] + headerFields[3]);
-        if (headerFields[0] + headerFields[3] > 0) printAnswerRecords(ByteBuffer.wrap(dataAnswer), headerFields);
+        if (headerFields[0] + headerFields[3] > 0) printAnswerRecords(ByteBuffer.wrap(dataAnswer), headerFields, packetModel);
 
         System.out.printf("***Additional Section (%d records)***\n", headerFields[1]);
-        if (headerFields[1] > 0) printAnswerRecords(buffer, headerFields);
+        if (headerFields[1] > 0) printAnswerRecords(buffer, headerFields, packetModel);
     }
 
-    private void printAnswerRecords(ByteBuffer answer, short[] headerFields) {
+    private void printAnswerRecords(ByteBuffer answer, short[] headerFields, DnsPacket packetModel) {
         
         for (int printedAnswers = 0; printedAnswers < headerFields[0] + headerFields[3]; printedAnswers++)  {
 
-            short name = answer.getShort();
+            short namePtr = answer.getShort();
             short type = answer.getShort();
             short class_x = answer.getShort();
             int timeToLive = answer.getInt();
@@ -63,10 +64,12 @@ public class DnsClientLogger {
                     headerFields[2] == 1 ? "auth" : "nonauth"
                 );
             }
-            else if (type == ANSWER_TYPE_NS) {
-                answer.get(data, 0, dataLength);
-                System.out.printf("NS \t %s \t %d \t %s\n", 
-                    new String(data, StandardCharsets.UTF_8),
+            else if (type == ANSWER_TYPE_NS || type == ANSWER_TYPE_SOA) {
+                String nameServer = parseNameServer(answer);
+                String mailbox = parseMailbox(answer, namePtr);
+                System.out.printf("%s \t %s \t %d \t %s\n",
+                    requestArgs.get("queryType").toUpperCase(),
+                    requestArgs.get("queryType").toUpperCase().equals("NS") ? nameServer : mailbox,
                     timeToLive,
                     headerFields[2] == 1 ? "auth" : "nonauth"
                 );
@@ -80,10 +83,12 @@ public class DnsClientLogger {
                 );
             }
             else if (type == ANSWER_TYPE_MX) {
+                String nameServer = parseNameServer(answer);
+                String mailbox = parseMailbox(answer, namePtr);
                 short preference = answer.getShort();
                 answer.get(data, 0, dataLength - 2);
                 System.out.printf("MX \t %s \t %d \t %d \t %s\n", 
-                    new String(data, StandardCharsets.UTF_8),
+                    mailbox,
                     preference,
                     timeToLive,
                     headerFields[2] == 1 ? "auth" : "nonauth"
