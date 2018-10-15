@@ -43,14 +43,18 @@ public final class DnsClient {
      * @param args 
      */
     public static void main(String[] args) {
+        float elapsedTime = 0;
+        DatagramPacket dgRequest, dgResponse;
+        HashMap<String, String> pArgs;
+        DnsPacket packetModel;
+        DatagramSocket socket;
+
         try {
-            float elapsedTime = 0;
-            DatagramPacket dgRequest, dgResponse;
-            HashMap<String, String> pArgs = parseArguments(args);
-            DnsPacket packetModel = new DnsPacket();
+            pArgs = parseArguments(args);
             logger = new DnsClientLogger(pArgs);
+            packetModel = new DnsPacket();
+            socket = new DatagramSocket();
             
-            DatagramSocket socket = new DatagramSocket();
             socket.setSoTimeout(Integer.valueOf(pArgs.get("timeout")) * 1000);
             socket.connect(InetAddress.getByName(pArgs.get("dnsIp")), Integer.valueOf(pArgs.get("port")));
             
@@ -63,7 +67,7 @@ public final class DnsClient {
             float start = System.currentTimeMillis();
             socket.send(dgRequest);
             socket.receive(dgResponse);
-            elapsedTime = System.currentTimeMillis()  - start;
+            elapsedTime = System.currentTimeMillis() - start;
 
             logger.printResponse(dgResponse, packetModel, elapsedTime);
 
