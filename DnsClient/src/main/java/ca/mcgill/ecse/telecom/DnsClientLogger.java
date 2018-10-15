@@ -20,7 +20,7 @@ public class DnsClientLogger {
         this.requestArgs = requestArgs;
     }
 
-    public void printResponse(DatagramPacket dgPacket, DnsPacket packetModel, long elapsedTime) throws Exception{
+    public void printResponse(DatagramPacket dgPacket, DnsPacket packetModel, float elapsedTime) throws Exception{
         ByteBuffer buffer = ByteBuffer.wrap(dgPacket.getData());
 
         byte[] dataHeader = new byte[12];
@@ -35,6 +35,7 @@ public class DnsClientLogger {
         byte[] dataAnswer = new byte[DnsClient.DATAGRAM_RESPONSE_SIZE - dataHeader.length - dataQuestion.length];
         buffer.get(dataAnswer, 0, dataAnswer.length);
 
+        System.out.printf("Response received after %f seconds (%d retries)\n", elapsedTime, 0); // FIXME 
         System.out.printf("***Answer Section (%d records)***\n", headerFields[0] + headerFields[3]);
         if (headerFields[0] + headerFields[3] > 0) printAnswerRecords(ByteBuffer.wrap(dataAnswer), headerFields, packetModel);
 
