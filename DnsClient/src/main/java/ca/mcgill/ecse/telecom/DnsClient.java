@@ -27,11 +27,14 @@ import ca.mcgill.ecse.telecom.packet.DnsPacketBuilder;
 
 public final class DnsClient {
 
+    public static final int DATAGRAM_RESPONSE_SIZE = 128;
+
     private static final String DEFAULT_TIMEOUT = "5";
     private static final String DEFAULT_MAX_RETRIES = "3";
     private static final String DEFAULT_PORT = "53";
     private static final String DEFAULT_QUERY_TYPE = "A";
     private static DnsPacketBuilder packetBuilder;
+    private static DnsClientLogger logger;
 
     private DnsClient() {}
     
@@ -41,22 +44,28 @@ public final class DnsClient {
      */
     public static void main(String[] args) {
         try {
+            float elapsedTime = 0;
+            DatagramPacket dgRequest, dgResponse;
             HashMap<String, String> pArgs = parseArguments(args);
-        
+            DnsPacket packetModel = new DnsPacket();
+            logger = new DnsClientLogger(pArgs);
+            
             DatagramSocket socket = new DatagramSocket();
-            socket.setSoTimeout(Integer.valueOf(pArgs.get("timeout")));
+            socket.setSoTimeout(Integer.valueOf(pArgs.get("timeout")) * 1000);
             socket.connect(InetAddress.getByName(pArgs.get("dnsIp")), Integer.valueOf(pArgs.get("port")));
             
-            packetBuilder = new DnsPacketBuilder(new DnsPacket());
-            DatagramPacket dgRequest = packetBuilder.createRequestPacket(pArgs);
+            packetBuilder = new DnsPacketBuilder(packetModel);
+            dgRequest = packetBuilder.createRequestPacket(pArgs);
+            dgResponse = new DatagramPacket(new byte[DATAGRAM_RESPONSE_SIZE], DATAGRAM_RESPONSE_SIZE);
+
+            logger.printRequest();
+
+            float start = System.currentTimeMillis();
             socket.send(dgRequest);
-
-            DatagramPacket dgResponse = new DatagramPacket(new byte[128], 128);
             socket.receive(dgResponse);
+            elapsedTime = System.currentTimeMillis()  - start;
 
-            // TODO Update header, question, and answer
-
-            // TODO Print results with logger
+            logger.printResponse(dgResponse, packetModel, elapsedTime);
 
             socket.close();
         }
