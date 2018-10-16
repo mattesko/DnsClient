@@ -37,13 +37,13 @@ public class DnsClientLogger {
 
         System.out.printf("Response received after %f seconds (%d retries)\n", elapsedTime, 0); // FIXME 
         System.out.printf("***Answer Section (%d records)***\n", headerFields[0] + headerFields[3]);
-        if (headerFields[0] + headerFields[3] > 0) printAnswerRecords(ByteBuffer.wrap(dataAnswer), headerFields, packetModel);
+        if (headerFields[0] + headerFields[3] > 0) printAnswerRecords(ByteBuffer.wrap(dataAnswer), headerFields, packetModel, dataHeader.length + dataQuestion.length);
 
         System.out.printf("***Additional Section (%d records)***\n", headerFields[1]);
-        if (headerFields[1] > 0) printAnswerRecords(buffer, headerFields, packetModel);
+        if (headerFields[1] > 0) printAnswerRecords(buffer, headerFields, packetModel, dataHeader.length + dataQuestion.length);
     }
 
-    private void printAnswerRecords(ByteBuffer answer, short[] headerFields, DnsPacket packetModel) {
+    private void printAnswerRecords(ByteBuffer answer, short[] headerFields, DnsPacket packetModel, int headerLength) {
         
         for (int printedAnswers = 0; printedAnswers < headerFields[0] + headerFields[3]; printedAnswers++)  {
 
@@ -84,12 +84,10 @@ public class DnsClientLogger {
                 );
             }
             else if (type == ANSWER_TYPE_MX) {
-                String nameServer = parseNameServer(answer);
-                String mailbox = parseMailbox(answer, namePtr);
                 short preference = answer.getShort();
-                answer.get(data, 0, dataLength - 2);
+                String mailExchange = parseMailExchange(answer, namePtr, headerLength);
                 System.out.printf("MX \t %s \t %d \t %d \t %s\n", 
-                    mailbox,
+                    mailExchange,
                     preference,
                     timeToLive,
                     headerFields[2] == 1 ? "auth" : "nonauth"
@@ -100,7 +98,7 @@ public class DnsClientLogger {
         
     private void parseResponseQuestion(ByteBuffer question) {
 
-
+        // TODO ?
     }
 
     private short[] parseResponseHeader(ByteBuffer Header, int ID) throws Exception{
@@ -199,14 +197,49 @@ public class DnsClientLogger {
         StringBuilder sb = new StringBuilder();
         byte end = (byte) (namePointer >> 8); // The 8 MSB of the pointer indicate that it is a pointer
 
-        while(len != end) {
+        while(len != end && len >= 1) {
             byte[] data = new byte[len];
             buffer.get(data, 0, len);
             sb.append(new String(data, StandardCharsets.UTF_8));
             len = buffer.get();
             if (len != end) {sb.append(".");}
         }
-        sb.append(domainName);
+
+        return sb.toString();
+    }
+
+    private String parseMailExchange(ByteBuffer buffer, short namePointer, int headerLength) {
+        
+        byte len = buffer.get();
+        StringBuilder sb = new StringBuilder();
+        byte end = (byte) (namePointer >> 8);
+
+        while(len != end && len != 0x00) {
+            byte[] data = new byte[len];
+            buffer.get(data, 0, len);
+            sb.append(new String(data, StandardCharsets.UTF_8));
+            len = buffer.get();
+            if (len != end && len != 0x00) {sb.append(".");}
+        }
+
+        // Require to append the name pointed to by the name pointer
+        if (len == end) {
+            
+            int index = (((len & 0b0011_1111) << 8) | buffer.get()) - headerLength;
+            len = buffer.get(index);
+            sb.append(".");
+            
+            while(len != 0x00) {
+                byte[] data = new byte[len];
+                for (int i = 0; i < len; i++) {
+                    data[i] = buffer.get(++index);
+                }
+                sb.append(new String(data, StandardCharsets.UTF_8));
+                len = buffer.get(++index);
+                if (len != end && len != 0x00) {sb.append(".");}
+            }
+        }
+
         return sb.toString();
     }
 }
