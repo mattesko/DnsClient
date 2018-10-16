@@ -66,8 +66,8 @@ public class DnsClientLogger {
                 );
             }
             else if (type == ANSWER_TYPE_NS || type == ANSWER_TYPE_SOA) {
-                String nameServer = parseNameServer(answer);
-                String mailbox = parseMailbox(answer, namePtr);
+                String nameServer = parseMailbox(answer, namePtr, headerLength);
+                String mailbox = parseMailbox(answer, namePtr, headerLength);
                 System.out.printf("%s \t %s \t %d \t %s\n",
                     requestArgs.get("queryType").toUpperCase(),
                     requestArgs.get("queryType").toUpperCase().equals("NS") ? nameServer : mailbox,
@@ -183,13 +183,13 @@ public class DnsClientLogger {
             buffer.get(data, 0, len);
             sb.append(new String(data, StandardCharsets.UTF_8));
             len = buffer.get();
-            if (len != 0x00) {sb.append(".");}
+            if (len != end) {sb.append(".");}
         }
 
         return sb.toString();
     }
 
-    private String parseMailbox(ByteBuffer buffer, short namePointer) {
+    private String parseMailbox(ByteBuffer buffer, short namePointer, int headerLength) {
 
         byte len = buffer.get();
         String domainName = requestArgs.get("domainName");
@@ -197,12 +197,18 @@ public class DnsClientLogger {
         StringBuilder sb = new StringBuilder();
         byte end = (byte) (namePointer >> 8); // The 8 MSB of the pointer indicate that it is a pointer
 
-        while(len != end && len >= 1) {
+        while(len != end && len != 0x00) {
             byte[] data = new byte[len];
             buffer.get(data, 0, len);
             sb.append(new String(data, StandardCharsets.UTF_8));
             len = buffer.get();
             if (len != end) {sb.append(".");}
+        }
+
+        // Require to append the name pointed to by the name pointer
+        if (len == end) {
+            sb.append(".");
+            sb.append(domainName);
         }
 
         return sb.toString();
@@ -224,7 +230,7 @@ public class DnsClientLogger {
 
         // Require to append the name pointed to by the name pointer
         if (len == end) {
-            
+
             int index = (((len & 0b0011_1111) << 8) | buffer.get()) - headerLength;
             len = buffer.get(index);
             sb.append(".");
