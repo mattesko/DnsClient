@@ -20,7 +20,7 @@ public class DnsClientLogger {
         this.requestArgs = requestArgs;
     }
 
-    public void printResponse(DatagramPacket dgPacket, DnsPacket packetModel, float elapsedTime) throws Exception{
+    public void printResponse(DatagramPacket dgPacket, DnsPacket packetModel, float elapsedTime, int retryCounter) throws Exception{
         ByteBuffer buffer = ByteBuffer.wrap(dgPacket.getData());
 
         byte[] dataHeader = new byte[12];
@@ -35,7 +35,7 @@ public class DnsClientLogger {
         byte[] dataAnswer = new byte[DnsClient.DATAGRAM_RESPONSE_SIZE - dataHeader.length - dataQuestion.length];
         buffer.get(dataAnswer, 0, dataAnswer.length);
 
-        System.out.printf("Response received after %f seconds (%d retries)\n", elapsedTime, 0); // FIXME 
+        System.out.printf("Response received after %f seconds (" + (retryCounter - 1)+ " retries)\n", (double)elapsedTime / 1000000000.0); // FIXME 
         System.out.printf("***Answer Section (%d records)***\n", headerFields[0] + headerFields[3]);
         if (headerFields[0] + headerFields[3] > 0) printAnswerRecords(ByteBuffer.wrap(dataAnswer), headerFields, packetModel, dataHeader.length + dataQuestion.length);
 
@@ -96,10 +96,7 @@ public class DnsClientLogger {
         }
     }
         
-    private void parseResponseQuestion(ByteBuffer question) {
-
-        // TODO ?
-    }
+    private void parseResponseQuestion(ByteBuffer question) {} //Still Needed ?
 
     private short[] parseResponseHeader(ByteBuffer Header, int ID) throws Exception{
         //Check For Matching ID - 2 bytes
