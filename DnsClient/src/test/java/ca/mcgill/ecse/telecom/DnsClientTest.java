@@ -29,7 +29,7 @@ public class DnsClientTest {
     }
 
     @Test
-    public void testCommandLineFail1() {
+    public void testCommandLine2() {
         String[] args = {"-t", "10", "-r", "2", "-mx", "@8.8.8.8", "google.com"};
         try {
             HashMap<String, String> pArgs = DnsClient.parseArguments(args);
