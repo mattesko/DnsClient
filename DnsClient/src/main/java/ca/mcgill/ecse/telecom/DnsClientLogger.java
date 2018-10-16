@@ -78,7 +78,7 @@ public class DnsClientLogger {
             else if (type == ANSWER_TYPE_CNAME) {
                 answer.get(data, 0, dataLength);
                 System.out.printf("CNAME \t %s \t %d \t %s\n", 
-                    new String(data, StandardCharsets.UTF_8),
+                    requestArgs.get("domainName").contains("www") ? requestArgs.get("domainName").substring(4) : requestArgs.get("domainName"),
                     timeToLive,
                     headerFields[2] == 1 ? "auth" : "nonauth"
                 );
