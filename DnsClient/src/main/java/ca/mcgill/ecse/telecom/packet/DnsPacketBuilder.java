@@ -4,9 +4,6 @@ import java.net.DatagramPacket;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
-import ca.mcgill.ecse.telecom.packet.DnsPacket.DnsPacketAnswer;
-import ca.mcgill.ecse.telecom.packet.DnsPacket.DnsPacketHeader;
-import ca.mcgill.ecse.telecom.packet.DnsPacket.DnsPacketQuestion;
 
 public class DnsPacketBuilder {
     DnsPacket packet;
