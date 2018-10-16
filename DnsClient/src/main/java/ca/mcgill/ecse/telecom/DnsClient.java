@@ -27,7 +27,7 @@ import ca.mcgill.ecse.telecom.packet.DnsPacketBuilder;
 
 public final class DnsClient {
 
-    public static final int DATAGRAM_RESPONSE_SIZE = 128;
+    public static final int DATAGRAM_RESPONSE_SIZE = 256;
 
     private static final String DEFAULT_TIMEOUT = "5";
     private static final String DEFAULT_MAX_RETRIES = "3";
