@@ -105,7 +105,7 @@ public class DnsClientLogger {
         //Check For Matching ID - 2 bytes
         int r_id = (int) Header.getShort();
         if(r_id != ID){
-            throw new Exception("ERROR - Response ID does not match Query ID.\n");
+            throw new Exception("ERROR  Response ID does not match Query ID.\n");
         }
         //Get next Byte - 1 bytes (QR, OPCODE, AA, TC, RD)
         byte buffer = Header.get();
@@ -123,13 +123,13 @@ public class DnsClientLogger {
 
         //Check if truncate
         if((buffer & 1<<1) == 2){ //If second bit is 1 throw error
-            throw new Exception("ERROR - Response was Truncated.\n");
+            throw new Exception("ERROR  Response was Truncated.\n");
         }
 
         buffer = Header.get();
         //Check if the server support recursive (1 if they do not support??)
         if((buffer & 1<<7) == 1 ){
-            throw new Exception("ERROR - Server does not support recursive queries.\n");
+            throw new Exception("ERROR  Server does not support recursive queries.\n");
         }
 
         //Check RCODE Response
@@ -137,19 +137,19 @@ public class DnsClientLogger {
             //Code 0 - Do nothing
 
             if((RCODE == 1) ){
-                throw new Exception("ERROR - Format error: the name server was unable to interpret the query");
+                throw new Exception("ERROR  Format error: the name server was unable to interpret the query");
             }
             else if((RCODE == 2) ){
-                throw new Exception("ERROR - Server failure: the name server was unable to process this query due to a problem with the name server");
+                throw new Exception("ERROR  Server failure: the name server was unable to process this query due to a problem with the name server");
             }
             else if((RCODE == 3) ){
-                throw new Exception("NOTFOUND - Name error: meaningful only for responses from an authoritative name server, this code signifies that the domain name referenced in the query does not exist");
+                throw new Exception("NOTFOUND");
             }
             else if((RCODE == 4) ){
-                throw new Exception("ERROR - Not implemented: the name server does not support the requested kind of query");
+                throw new Exception("ERROR  Not implemented: the name server does not support the requested kind of query");
             }
             else if((RCODE == 5) ){
-                throw new Exception("ERROR - Refused: the name server refuses to perform the requested operation for policy reasons");
+                throw new Exception("ERROR  Refused: the name server refuses to perform the requested operation for policy reasons");
             }
 
         short QDCOUNT = Header.getShort();
