@@ -120,7 +120,7 @@ public class DnsClientLogger {
 
         //Check if truncate
         if((buffer & 1<<1) == 2){ //If second bit is 1 throw error
-            throw new Exception("ERROR  Response was Truncated.\n");
+            throw new Exception("WARNING Truncated response not supported.\n");
         }
 
         buffer = Header.get();
