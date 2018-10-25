@@ -68,7 +68,7 @@ public final class DnsClient {
             //Saving the start time
             start = System.nanoTime();
             
-            while(retryCounter < Integer.parseInt(DEFAULT_MAX_RETRIES)) {
+            while(retryCounter < Integer.parseInt(pArgs.get("maxRetries"))) {
                 //Sending Request
                 try{
                     socket.send(dgRequest);
@@ -95,7 +95,7 @@ public final class DnsClient {
             }
             if(received == false){
 
-                System.out.println("ERROR   Maximum number of retries " + DEFAULT_MAX_RETRIES + " exceeded");
+                System.out.println("ERROR   Maximum number of retries " + pArgs.get("maxRetries") + " exceeded");
 
                 //Close Program
                 java.lang.System.exit(1);
