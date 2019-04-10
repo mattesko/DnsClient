@@ -1,12 +1,4 @@
-# McGill ECSE 489 Telecom Network Lab Experiments
-### Students:
-* Matthew Lesko-Krleza
-* Maxence-Henri Rousseau-Regaudie
-
-### Experiments:
-* Java DNS Client
-
-#### Java DNS Client
+# Java DNS Client
 Installation:
 1. Clone the repository with `git clone https://github.com/mattesko/telecom-lab.git`
 2. Navigate to the root folder of the DnsClient project `cd <INSTALLATION_FOLDER>/telecom-lab/DnsClient`
